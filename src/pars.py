@@ -1,6 +1,7 @@
 import requests
-from abc import ABC, abstractmethod
 from src.vacancies import Vacancy
+from abc import ABC, abstractmethod
+
 
 
 class Parser(ABC):
@@ -19,11 +20,15 @@ class HHClass(Parser):
         """
         Получает вакансии согласно заданному запросу
         """
-        params = {'text': title, 'area': 1, 'per_page': 100}
+        params = {
+            'text': title, 
+            'area': 1, 
+            'per_page': 100
+            }
         response = requests.get(url=f'{self.URL}vacancies', params=params)
 
         # Проверка статуса ответа
-        if response.status_code != 100:
+        if response.status_code != 200:
             print(f"Ошибка запроса к API: Статус {response.status_code}")
             return []
 

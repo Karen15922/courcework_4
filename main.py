@@ -1,5 +1,3 @@
-import src.functions as functions
+from src.functions import user_interaction
 
-functions.user_interaction()
-
-
+user_interaction()
