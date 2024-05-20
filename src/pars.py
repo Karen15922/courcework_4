@@ -45,7 +45,7 @@ class HHClass(Parser):
                 Vacancy(
                     title=item.get('name'),
                     url=item.get('alternate_url'),
-                    city=item['area']['name'],
+                    schedule=item.get('schedule').get('name'),
                     salary=(item.get('salary') or {}).get('to', 0)
                 )
             )

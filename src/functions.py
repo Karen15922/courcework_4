@@ -1,6 +1,9 @@
 from src.pars import HHClass
+from src.saver import JSONSaver
 
 hh = HHClass()
+json_saver = JSONSaver()
+
 
 def get_filtered_vacancies(vacancies, filter_words):
     """
@@ -17,12 +20,14 @@ def get_vacancies_by_salary(vacancies, salary_range):
     """
     Фильтрация по диапазону зарплат
     """
-    filtered_by_salary = [
-        vacancy for vacancy in vacancies
-        if vacancy.salary >= salary_range[0]
-    ]
-
+    filtered_by_salary = []
+    
+    for vacancy in vacancies:
+        if vacancy.salary in salary_range:
+            filtered_by_salary.append(vacancy)
+            
     return filtered_by_salary
+
 
 def get_top_vacancies(sorted_vacancies, top_n):
 
@@ -51,8 +56,10 @@ def user_interaction():
 
     sorted_vacancies = sorted(ranged_vacancies, key=lambda x: x.salary, reverse=True)
     top_vacancies = sorted_vacancies[:top_n]
-    print_vacancies(top_vacancies)
-    
 
+    print_vacancies(top_vacancies)
+
+    json_saver.dump_to_file(top_vacancies)
+    
 if __name__ == "__main__":
     user_interaction()

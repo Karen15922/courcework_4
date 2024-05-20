@@ -6,25 +6,25 @@ class Vacancy:
     title: str #Название вакансии
     url: str #URL страницы вакансии
     salary: int #Зарплата предложенная за работу
-    city: str #Город, в котором предлагается вакансия
+    schedule: str #требования по графику
 
-    def __init__(self, title, url, salary, city):
+    def __init__(self, title, url, salary, schedule):
         self.title = title
         self.url = url
-        self.city = city
+        self.schedule = schedule
         self.salary = salary or 0
 
     def __str__(self):
         """
         Строковое представление объекта
         """
-        return f'{self.title} ({self.city}): {self.salary}'
+        return f'{self.title} {self.schedule} {self.salary}'
 
     def __repr__(self):
         """
         Официальное строковое представление объекта
         """
-        return f'{self.title} ({self.city}): {self.salary}'
+        return f'{self.title} ({self.schedule}): {self.salary}'
 
     def __gt__(self, other):
         """"
@@ -39,6 +39,6 @@ class Vacancy:
         return {
             'title': self.title,
             'url': self.url,
-            'salary': self.salary,
-            'city': self.city
+            'schedule': self.schedule,
+            'salary': self.salary
         }

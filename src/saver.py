@@ -9,7 +9,7 @@ class JSONSaver:
             raise ValueError("Ожидается, что объект vacancies является списком.")
 
         full_path = os.path.join(directory, filename)  # Путь к файлу
-        
+
         try:
             vacancies_data = [vac.to_json() for vac in vacancies]
             with open(full_path, 'w', encoding='UTF-8') as file:
@@ -20,5 +20,7 @@ class JSONSaver:
         except Exception as e:
             print(f"Произошла ошибка: {e}")
 
-vac = sorted(HHClass().get_vacancies("python"))
-JSONSaver().dump_to_file(vac)
+
+if __name__ == '__main__':
+    vac = sorted(HHClass().get_vacancies("python"))
+    JSONSaver().dump_to_file(vac)
