@@ -1,3 +1,4 @@
+
 class Vacancy:
     """
     Инициализация вакансии с заданными атрибутами
@@ -12,19 +13,19 @@ class Vacancy:
         self.title = title
         self.url = url
         self.schedule = schedule
-        self.salary = salary or 0
+        self.salary = salary 
 
     def __str__(self):
         """
         Строковое представление объекта
         """
-        return f'{self.title} {self.schedule} {self.salary}'
+        return f'\n{self.title}\t{self.schedule}\t{self.salary}'
 
     def __repr__(self):
         """
         Официальное строковое представление объекта
         """
-        return f'{self.title} ({self.schedule}): {self.salary}'
+        return f'\n{self.title}\t{self.schedule}\t{self.salary}'
 
     def __gt__(self, other):
         """"
@@ -42,3 +43,5 @@ class Vacancy:
             'schedule': self.schedule,
             'salary': self.salary
         }
+    
+    

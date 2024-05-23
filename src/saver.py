@@ -4,7 +4,15 @@ from src.pars import HHClass
 
 
 class JSONSaver:
-    def dump_to_file(self, vacancies, filename="vacancies.json", directory="data"):
+    """
+    Класс для сохранения данных о вакансиях в формате JSON в файл.
+    
+    Методы:
+      dump_to_file(vacancies, filename, directory): Сохраняет список вакансий в файл JSON. 
+        Принимает список вакансий, имя файла и директорию для сохранения.
+    """
+     
+    def dump_to_file(self, vacancies, filename="data.json", directory="data"):
         if not isinstance(vacancies, list):
             raise ValueError("Ожидается, что объект vacancies является списком.")
 
