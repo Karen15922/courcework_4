@@ -1,34 +1,62 @@
+from src.vacancies import Vacancy
+import src.functions
+from abc import ABC, abstractmethod
 import json
-import os
-from src.pars import HHClass
 
 
-class JSONSaver:
-    """
-    Класс для сохранения данных о вакансиях в формате JSON в файл.
-    
-    Методы:
-      dump_to_file(vacancies, filename, directory): Сохраняет список вакансий в файл JSON. 
-        Принимает список вакансий, имя файла и директорию для сохранения.
-    """
-     
-    def dump_to_file(self, vacancies, filename="data.json", directory="data"):
-        if not isinstance(vacancies, list):
-            raise ValueError("Ожидается, что объект vacancies является списком.")
+class Saver(ABC):
+    '''
+    абстрактный класс для чтения, сохранения, добавления, удаления данных
+    ''' 
 
-        full_path = os.path.join(directory, filename)  # Путь к файлу
+    @abstractmethod
+    def read_data(self, data):
+        pass
 
-        try:
-            vacancies_data = [vac.to_json() for vac in vacancies]
-            with open(full_path, 'w', encoding='UTF-8') as file:
-                json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
-            print(f"Данные успешно сохранены в {full_path}")
-        except AttributeError:
-            raise ValueError("Убедитесь, что каждый элемент vacancies имеет метод to_json.")
-        except Exception as e:
-            print(f"Произошла ошибка: {e}")
+    @abstractmethod
+    def save(self, data: list[Vacancy]):
+        pass
 
+    @abstractmethod
+    def add(self, vacancy: Vacancy):
+        pass
 
-if __name__ == '__main__':
-    vac = sorted(HHClass().get_vacancies("python"))
-    JSONSaver().dump_to_file(vac)
+    @abstractmethod
+    def delete(self, vacancy: Vacancy):
+        pass
+
+class JSONSaver(Saver):
+    '''
+    класс для чтения, сохранения, добавления, удаления данных в формате JSON
+    пока реализовано только сохранение
+    '''
+    filepath = './data/'
+
+    def __init__(self, f_path, data: list[Vacancy] = []):
+        self.f_path = f'{JSONSaver.filepath}{f_path}.json'
+        self.data = data
+
+    def read_data(self):
+        '''
+        чтение данных, для хранения вакансий используется таже структура
+        '''
+        with open(self.f_path, 'r') as f:
+            vacancies = Vacancy.cast_to_object_list(json.loads(f.read()))
+            src.functions.print_vacancies(vacancies)
+            
+    def save(self):
+        '''
+        сохранение данных
+        '''
+        to_save = []
+        for vacancy in self.data:
+            to_save.append(vacancy.__dict__())
+        with open(self.f_path, 'w') as f:
+            json.dump(to_save, f)
+        print('данные успешно записаны')
+
+    def add(self, vacancy: Vacancy):
+        pass
+
+    def delete(self):
+        pass
