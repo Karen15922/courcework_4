@@ -1,51 +1,69 @@
 import requests
+from accessify import private
+from src.vacancies import Vacancy
 from abc import ABC, abstractmethod
-
 
 class Parser(ABC):
     '''
-    абстрактный класс-родитель для классов работающих с вшешним ресурсом
+    Parser - абстрактный класс, который предоставляет базовую структуру для парсеров вакансий.
     '''
-    def __init__(self, file_worker):
-     self.fileworker = file_worker
-    
+
     @abstractmethod
-    def load_vacancies(self):
-        pass 
+    def connect_to_api(self, title):
+        pass
 
     @abstractmethod
     def get_vacancies(self):
         pass
 
-
-class HH(Parser):
+class HHClass(Parser):
     """
-    Класс для работы с API HeadHunter
-    Класс Parser является родительским классом, который вам необходимо реализовать
+    HHClass использует API HH.ru для получения списка вакансий, соответствующих заданному запросу.
     """
+    def __init__(self):
+        self.__URL = 'https://api.hh.ru/'  # Базовый URL для доступа к API HH.ru
+        self.vacancies = []
 
-    def __init__(self, file_worker: str):
-        self.url = 'https://api.hh.ru/vacancies'
-        self.headers = {'User-Agent': 'HH-User-Agent'}
-        self.params = {'text': '', 'page': 0, 'per_page': 100, 'only_with_salary':True}
-        self.__vacancies = []
-        #для чего передается параметр классу-родителю - неясно(пока)
-        super().__init__(file_worker)
+    @property
+    def url(self):
+        '''
+        геттер для url
+        '''
+        return self.__URL
 
-    def load_vacancies(self, keyword: str):
+    @private
+    def connect_to_api(self, title):
         '''
-        метод загружающий данные из внешнего ресурса
+        Получает список вакансий с API HH.ru, соответствующих заданному запросу.
         '''
-        self.params['text'] = keyword
-        while self.params.get('page') != 3:
-            response = requests.get(self.url, headers=self.headers, params=self.params)
-            vacancies = response.json()['items']
-            self.__vacancies.extend(vacancies)
-            self.params['page'] += 1
+        params = {
+            'text': title, 
+            'page': 0,
+            'per_page': 100,
+            'only_with_salary':True
+            }
+        response = requests.get(url=f'{self.url}vacancies', params=params)
 
-    def get_vacancies(self, keyword: str) -> list[dict]:
+        # Проверка статуса ответа
+        if response.status_code != 200:
+            print(f"Ошибка запроса к API: Статус {response.status_code}")
+            return 
+
+        # Преобразование ответа в JSON и проверка наличия ключа 'items'
+        data = response.json()
+        if 'items' not in data:
+            print("Ответ API не содержит ключа 'items', проверьте структуру ответа:")
+            print(data)
+            return 
+        #создает список вакансий, извлекая данные из ответа API
+        vacancies_list = response.json()['items']
+        self.vacancies = Vacancy.cast_to_object_list(vacancies_list) 
+            
+    def get_vacancies(self, title):
         '''
-        метод возвращающий список вакансий полученный с внешнего ресурса
+        получает список инициализированных оюбъектов класса Vacancy
         '''
-        self.load_vacancies(keyword)
-        return self.__vacancies
+        self.connect_to_api(title)
+        return self.vacancies
+        
+

@@ -1,0 +1,132 @@
+[
+    {
+        "name": "Backend Developer (Python)",
+        "alternate_url": "https://hh.ru/vacancy/99559579",
+        "salary": {
+            "from": 600000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Product Owner в AI-платформу",
+        "alternate_url": "https://hh.ru/vacancy/98389823",
+        "salary": {
+            "from": 500000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Project Manager/Product Owner",
+        "alternate_url": "https://hh.ru/vacancy/98079240",
+        "salary": {
+            "from": 350000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Удаленная работа"
+        }
+    },
+    {
+        "name": "Начальник финансового отдела",
+        "alternate_url": "https://hh.ru/vacancy/99975694",
+        "salary": {
+            "from": 300000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Senior unity developer (gamedev)",
+        "alternate_url": "https://hh.ru/vacancy/100038073",
+        "salary": {
+            "from": 300000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Разработчик С/С++",
+        "alternate_url": "https://hh.ru/vacancy/99985353",
+        "salary": {
+            "from": 250000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Data scientist (научный сотрудник)",
+        "alternate_url": "https://hh.ru/vacancy/99750918",
+        "salary": {
+            "from": 207366
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Гибкий график"
+        }
+    },
+    {
+        "name": "Аналитик в команду аналитики данных",
+        "alternate_url": "https://hh.ru/vacancy/99132580",
+        "salary": {
+            "from": 200000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    },
+    {
+        "name": "Manual QA Engineer (Web)",
+        "alternate_url": "https://hh.ru/vacancy/99567716",
+        "salary": {
+            "from": 180000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Удаленная работа"
+        }
+    },
+    {
+        "name": "QA Engineer (Middle)",
+        "alternate_url": "https://hh.ru/vacancy/99864006",
+        "salary": {
+            "from": 150000
+        },
+        "area": {
+            "name": "Москва"
+        },
+        "schedule": {
+            "name": "Полный день"
+        }
+    }
+]

@@ -1,62 +1,102 @@
-from src.vacancies import Vacancy
-import src.functions
+import json, os
 from abc import ABC, abstractmethod
-import json
-
+from src.pars import HHClass
+from src.vacancies import Vacancy
 
 class Saver(ABC):
     '''
-    абстрактный класс для чтения, сохранения, добавления, удаления данных
-    ''' 
-
+    абстрактный метод для сохранения и чтения из файла
+    '''
     @abstractmethod
-    def read_data(self, data):
+    def save_to_file(self):
+        pass
+    
+    @abstractmethod
+    def read_from_file(self):
         pass
 
     @abstractmethod
-    def save(self, data: list[Vacancy]):
+    def delete_from_file(self):
         pass
-
-    @abstractmethod
-    def add(self, vacancy: Vacancy):
-        pass
-
-    @abstractmethod
-    def delete(self, vacancy: Vacancy):
-        pass
-
+    
 class JSONSaver(Saver):
     '''
-    класс для чтения, сохранения, добавления, удаления данных в формате JSON
-    пока реализовано только сохранение
+    Класс для сохранения данных о вакансиях в формате JSON в файл.
     '''
-    filepath = './data/'
+    def __init__(self, filename, vacancies=[], directory="data"):
+        self.__filename = f'{filename}.json'
+        self.vacancies = vacancies
+        self.directory = directory
 
-    def __init__(self, f_path, data: list[Vacancy] = []):
-        self.f_path = f'{JSONSaver.filepath}{f_path}.json'
-        self.data = data
+    @property
+    def filename(self):
+        '''
+        геттер для filename
+        '''
+        return self.__filename
+     
+    def save_to_file(self, filename):
+        ''' 
+        Сохраняет список вакансий в файл JSON. 
+        '''
+        if not isinstance(self.vacancies, list):
+            raise ValueError("Ожидается, что объект vacancies является списком.")
 
-    def read_data(self):
-        '''
-        чтение данных, для хранения вакансий используется таже структура
-        '''
-        with open(self.f_path, 'r') as f:
-            vacancies = Vacancy.cast_to_object_list(json.loads(f.read()))
-            src.functions.print_vacancies(vacancies)
+        full_path = os.path.join(self.directory, filename)  # Путь к файлу
+
+        try:
+            vacancies_data = self.convert_to_list()
+            if os.path.exists(full_path):
+                self.read_from_file()
+                readed_data = self.convert_to_list()
+                vacancies_data.extend(readed_data)
             
-    def save(self):
-        '''
-        сохранение данных
-        '''
-        to_save = []
-        for vacancy in self.data:
-            to_save.append(vacancy.__dict__())
-        with open(self.f_path, 'w') as f:
-            json.dump(to_save, f)
-        print('данные успешно записаны')
+            with open(full_path, 'w', encoding='UTF-8') as file:
+                json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
+            print(f"Данные успешно сохранены в {full_path}")
+        except AttributeError:
+            raise ValueError("Убедитесь, что каждый элемент vacancies имеет метод to_json.")
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
 
-    def add(self, vacancy: Vacancy):
+    def read_from_file(self):
+        '''
+        получает вакансии из файла
+        '''
+        full_path = os.path.join(self.directory, self.filename)  # Путь к файлу
+
+        with open(full_path, 'r') as f:
+            self.vacancies = Vacancy.cast_to_object_list(json.loads(f.read()))
+
+    def delete_from_file(self):
+        '''
+        удаляет вакансии из файла
+        '''
         pass
 
-    def delete(self):
-        pass
+    def validate_data(self, user_iteraction):
+        '''
+        проверяет что данные есть
+        '''
+        if self.vacancies:
+            self.save_to_file(self.filename)
+        else:
+            print('нет данных для сохранения')
+            user_input = input('хотите повторить запрос? y/n\n')
+
+            if user_input[:2] == 'y':
+                os.system('clear')
+                user_iteraction()
+            else:
+                print('ну ок')
+
+    def convert_to_list(self):
+        '''
+        возвращает список словарей ст атрибутами объектов Vacancy
+        '''
+        list_vacancies = []
+        for vacancy in self.vacancies:
+            list_vacancies.append(vacancy.__dict__())
+        return list_vacancies
+
+
