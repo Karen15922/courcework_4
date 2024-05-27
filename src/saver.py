@@ -71,6 +71,7 @@ class JSONSaver(Saver):
             self.vacancies = []
         
 
+
     def delete_from_file(self, keyword):
         '''
         удаляет вакансии из файла
@@ -104,6 +105,7 @@ class JSONSaver(Saver):
                 user_iteraction()
             else:
                 print('ну ок')
+
 
     def convert_to_list(self):
         '''

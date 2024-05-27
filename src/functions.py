@@ -72,6 +72,7 @@ def user_interaction():
         json_saver = JSONSaver(filename, top_vacancies)
         json_saver.validate_data(user_interaction)
 
+
     elif user_select == 2:
         filename = input('введите имя файла без .json: ')
         json_saver = JSONSaver(filename)
