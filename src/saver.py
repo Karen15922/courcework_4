@@ -64,15 +64,30 @@ class JSONSaver(Saver):
         получает вакансии из файла
         '''
         full_path = os.path.join(self.directory, self.filename)  # Путь к файлу
+        if os.stat(full_path).st_size: 
+            with open(full_path, 'r') as f:
+                self.vacancies = Vacancy.cast_to_object_list(json.loads(f.read()))
+        else:
+            self.vacancies = []
+        
 
-        with open(full_path, 'r') as f:
-            self.vacancies = Vacancy.cast_to_object_list(json.loads(f.read()))
-
-    def delete_from_file(self):
+    def delete_from_file(self, keyword):
         '''
         удаляет вакансии из файла
         '''
-        pass
+        delete_this = []
+        for i, vacancy in enumerate(self.vacancies): 
+            if keyword in vacancy.__str__():
+                delete_this.append(i)
+        print('удалены вакансии:')
+        for i in delete_this:
+            print(self.vacancies[i])
+        for i in delete_this[::-1]:
+            self.vacancies.pop(i)
+        full_path = os.path.join(self.directory, self.filename)
+        vacancies_data = self.convert_to_list()
+        with open(full_path, 'w', encoding = 'UTF-8') as file:
+                json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
 
     def validate_data(self, user_iteraction):
         '''

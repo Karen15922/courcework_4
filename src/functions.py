@@ -77,7 +77,12 @@ def user_interaction():
         json_saver = JSONSaver(filename)
         vacancies = json_saver.read_from_file()
         print_vacancies(Vacancy.vacancies)
+        user_select = int(input('введи:\n1 - для удаления вакансий из файла\n2 - для выхода\n'))
+        if user_select == 1:
+            keyword = input('по какому ключевому слову будем удалять?\n')
+            json_saver.delete_from_file(keyword)
 
     else:
         print('wrong input!')
-
+    
+    
